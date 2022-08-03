@@ -1,6 +1,6 @@
 🦇 Welcome to my blog "batdev" 🦇 
 
-📝 Demo: https://blog-batdev.vercel.app/contact
+📝 Demo: https://blog-batdev.vercel.app
 
 ⚙️ How the blog works
 The "Batdev" blog was built with NextJs, NodeJs, mongoDb and S3 from AWS. Its main features are: creation, deletion and editing of posts, creation of comments, creation, editing and deletion of users and creation of categories.
