@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;800&display=swap');
+@import '~react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+
+@tailwind base;
+
+@layer base {
+    .raleway {
+        font-family: 'Raleway', sans-serif;
+    }
+
+    h1 {
+        @apply font-extrabold text-[42px] tracking-[0.01em] text-primary font-raleway;
+    }
+    h2 {
+        @apply font-extrabold tracking-[0.01em] text-4xl text-primary font-raleway;
+    }
+    h3 {
+        @apply font-bold tracking-[0.01em] text-2xl text-primary font-raleway;
+    }
+    h4 {
+        @apply font-semibold tracking-[0.01em] text-lg font-raleway;
+    }
+    h5 {
+        @apply font-semibold text-primary font-raleway text-[18px] tracking-[2px];
+    }
+    h6 {
+        @apply font-extrabold text-[13px] tracking-[2px] uppercase text-primary font-raleway;
+    }
+    p {
+        @apply font-medium text-[16px] text-secondary font-raleway leading-[1.6923em];
+    }
+}
+
+@tailwind components;
+@tailwind utilities;
+
+::selection {
+    background-color: #74c2bd;
+    color: white;
+}
