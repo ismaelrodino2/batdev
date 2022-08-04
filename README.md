@@ -13,8 +13,8 @@ The "Batdev" blog was built with NextJs, NodeJs, mongoDb and S3 from AWS. Its ma
 <br />
 If you want to see the static version:
 <br />
-* Run the yarn build command;
+‣ Run the yarn build command;
 <br />
 Otherwise:
 <br />
-* Run the yarn dev command;
+‣ Run the yarn dev command;
