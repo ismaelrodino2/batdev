@@ -36,7 +36,7 @@ const Footer: NextPage = () => {
             <p>
                 Made with &#10084; by{' '}
                 <a
-                    href="https://github.com/ismaelrodino2"
+                    href="#"
                     target={'_blank'}
                     rel="noreferrer"
                     className="text-gray"

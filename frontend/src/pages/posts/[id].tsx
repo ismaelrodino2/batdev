@@ -152,7 +152,7 @@ const Post: React.FC<Props> = ({
                                         <li>
                                             <a
                                                 className="w-10 h-10 flex rounded-full bg-white text-gray justify-center items-center transition-colors duration-300 ease-in-out hover:text-white hover:bg-primary-medium"
-                                                href="https://github.com/ismaelrodino2"
+                                                href="#"
                                                 target={'_blank'}
                                                 rel="noreferrer"
                                             >
@@ -162,7 +162,7 @@ const Post: React.FC<Props> = ({
                                         <li>
                                             <a
                                                 className="w-10 h-10 flex rounded-full bg-white text-gray justify-center items-center transition-colors duration-300 ease-in-out hover:text-white hover:bg-primary-medium"
-                                                href="https://www.linkedin.com/in/ismael-tavares/?locale=en_US"
+                                                href="#"
                                                 target={'_blank'}
                                                 rel="noreferrer"
                                             >
