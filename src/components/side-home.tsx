@@ -22,7 +22,7 @@ export const SideHome = ({
         <Tag>about me</Tag>
         <div className="relative mx-auto mt-6  ">
           <Image
-            src={"/me.jpeg"}
+            src={process.env.NEXT_PUBLIC_PIC_OF_ME || ""}
             alt="Developer of the blog"
             width={100}
             height={100}

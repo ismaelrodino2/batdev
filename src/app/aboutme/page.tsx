@@ -31,7 +31,7 @@ function AboutMe() {
               <div className="">
                 <div className="relative ">
                   <Image
-                    src={"/me.jpeg" || ``}
+                    src={process.env.NEXT_PUBLIC_PIC_OF_ME || ``}
                     alt="Profile picture"
                     height={100}
                     width={100}
