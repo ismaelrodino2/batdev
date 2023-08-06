@@ -1,11 +1,8 @@
-"use client";
-import { useContext, useState, useEffect, useMemo } from "react";
+"use client";;
+import { useContext, useState, useEffect } from "react";
 import { Category, Post } from "@/utils/types";
 
-
 import { Pagination, Stack, Typography } from "@mui/material";
-import Header from "./header";
-import dynamic from "next/dynamic";
 import { SearchContext } from "@/contexts/SearchContext";
 import HomeFilter from "./home-filter";
 
@@ -54,26 +51,29 @@ const HomePagination = ({ categories, posts: poststring }: Props) => {
     getCurrentPosts(page);
   }, [page]);
 
-
   return (
     <div className="bg-white">
       <div className="container mx-auto px-4 ">
         <div className="px-4">
-            <div className="bg-neutral pt-4 pl-4">
-                <Stack spacing={2}>
-                  <Typography>Page: {page}</Typography>
-                  <Pagination
-                    count={10}
-                    page={page}
-                    onChange={handleChange}
-                    color="primary"
-                  />
-                </Stack>
-            </div>
-            {pageData && <HomeFilter posts={JSON.stringify(pageData)} categories={categories} />}
+          <div className="bg-neutral pt-4 pl-4">
+            <Stack spacing={2}>
+              <Typography>Page: {page}</Typography>
+              <Pagination
+                count={10}
+                page={page}
+                onChange={handleChange}
+                color="primary"
+              />
+            </Stack>
+          </div>
+          {pageData && (
+            <HomeFilter
+              posts={JSON.stringify(pageData)}
+              categories={categories}
+            />
+          )}
         </div>
       </div>
-
     </div>
   );
 };

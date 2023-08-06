@@ -42,7 +42,7 @@ const Settings = () => {
       setName(user.name || "");
       setEmail(user.email || "");
       setUserPicture(
-        user?.avatarUrl || process.env.NEXT_PUBLIC_GENERIC_AVATAR || "",
+        user?.avatarUrl || process.env.NEXT_PUBLIC_GENERIC_AVATAR || ""
       );
     }
   }, [user]);
@@ -51,7 +51,6 @@ const Settings = () => {
   const { logout } = useContext(AuthContext);
 
   const handleDelete = async () => {
-
     try {
       await supabase.from("users").delete().eq("id", id);
       await axios.delete("/api/user", {

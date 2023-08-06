@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import type { NextPage } from "next";
 import { AiFillGithub, AiFillLinkedin } from "react-icons/ai/index";
 import { CgWebsite } from "react-icons/cg";

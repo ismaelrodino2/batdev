@@ -1,5 +1,3 @@
-// Links.js
-import React from "react";
 import Link from "next/link";
 
 interface LinkData {
@@ -7,7 +5,7 @@ interface LinkData {
   link: string;
 }
 
-const NavLinks = ({ links }:{links:Array<LinkData>}) => {
+const NavLinks = ({ links }: { links: Array<LinkData> }) => {
   return (
     <ul className="flex flex-col md:flex-row md:justify-center">
       {links.map((el) => (

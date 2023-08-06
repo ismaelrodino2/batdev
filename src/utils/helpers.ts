@@ -10,7 +10,7 @@ export async function createPost(
   postPicture: File,
   title: string,
   categories: Array<Category>,
-  user: User |undefined
+  user: User | undefined
 ) {
   try {
     let url;
@@ -43,8 +43,8 @@ export async function createPost(
       categories,
     };
     try {
-     const res = axios.post("/api/post/",{data})
-      return await res
+      const res = axios.post("/api/post/", { data });
+      return await res;
     } catch (err) {
       console.log(err);
       return null;
@@ -55,12 +55,9 @@ export async function createPost(
   }
 }
 
-export async function editPost(
-id:string,
-content: string
-) {
+export async function editPost(id: string, content: string) {
   try {
-    await axios.put("/api/post/",{id, content})
+    await axios.put("/api/post/", { id, content });
   } catch (err) {
     console.log(err);
     return err;
@@ -91,8 +88,6 @@ export async function deletePost(post: Post) {
     return null;
   }
 }
-
-
 
 export const SuccessBar = (
   setMessage: (message: string) => void,
@@ -130,7 +125,7 @@ export const Cookies = async () => {
   }
 };
 
-// linksData.js
+// linksData
 export const linksNotAuth = [
   { name: "Home", link: "/" },
   { name: "About me", link: "aboutme" },

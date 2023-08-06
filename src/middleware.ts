@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
     token = JSON.parse(supabaseCookie?.value!)?.token;
     user = await jwtVerify(
       token!,
-      new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET!),
+      new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET!)
     );
   }
 

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Header from "@/components/header"; 
+import Header from "@/components/header";
 
 function AboutMe() {
   return (
@@ -19,9 +19,9 @@ function AboutMe() {
             <div className="md:w-1/4 w-full">
               <h4 className="my-4">Who I Am</h4>
               <p className="leading-[2.25em]">
-                Software developer with hands-on experience in
-                ReactJs, VueJs and NodeJs. Currently building projects with Typescript, NextJs and
-                NodeJs. Very optimistic with a proactive attitude and strong
+                Software developer with hands-on experience in ReactJs, VueJs
+                and NodeJs. Currently building projects with Typescript, NextJs
+                and NodeJs. Very optimistic with a proactive attitude and strong
                 technical experience. Over 2 years of experience working with a
                 variety of different technologies on both backend and frontend.
                 Passionate about life, art and building interesting products.

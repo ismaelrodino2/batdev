@@ -178,8 +178,11 @@ const NavBar = () => {
 
       <AnimateHeight duration={500} height={active}>
         <ul className="flex flex-col md:flex-row md:justify-center">
-        {user ? <NavLinks links={linksAuth} /> : <NavLinks links={linksNotAuth} />}
-
+          {user ? (
+            <NavLinks links={linksAuth} />
+          ) : (
+            <NavLinks links={linksNotAuth} />
+          )}
         </ul>
       </AnimateHeight>
 

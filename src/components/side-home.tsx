@@ -7,7 +7,7 @@ import { Categories } from "@/utils/types";
 
 type PropTypes = {
   setCategoryName?: (value: string) => void;
-  categories?: Categories
+  categories?: Categories;
   categoryName?: string;
 };
 

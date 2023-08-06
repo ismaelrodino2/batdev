@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
         postPicKey: body.data.postPicKey,
         allowComments: false,
         categories: {
-          create: body.data.categories.map((category:any) => ({
+          create: body.data.categories.map((category: any) => ({
             category: {
               connect: {
                 id: category.id,
@@ -23,11 +23,11 @@ export async function POST(req: NextRequest) {
           })),
         },
       },
-    });    
-    
+    });
+
     return new Response(JSON.stringify({ post }));
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return new Response(JSON.stringify({ post: null }));
   } finally {
     await prisma.$disconnect();
@@ -63,7 +63,6 @@ export async function PUT(req: NextRequest) {
       data: {
         content: body.content,
       },
-    
     });
     return new Response(JSON.stringify({ post: post }));
   } catch (err) {
@@ -73,4 +72,3 @@ export async function PUT(req: NextRequest) {
     await prisma.$disconnect();
   }
 }
-

@@ -37,7 +37,11 @@ export default function Posts({ post }: PropTypes) {
           <Link href={`/post/${post.id}`}>
             {post.postPic ? (
               <div className="relative">
-                <ImagePlaceholder alt="Post picture" pic={post?.postPic} posts />
+                <ImagePlaceholder
+                  alt="Post picture"
+                  pic={post?.postPic}
+                  posts
+                />
               </div>
             ) : (
               ""

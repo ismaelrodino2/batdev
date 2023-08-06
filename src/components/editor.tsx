@@ -2,7 +2,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import React, { useEffect, useState, useCallback } from "react";
-import "@/app/proseMirror.css"
+import "@/app/proseMirror.css";
 
 import {
   FaBold,
@@ -152,7 +152,7 @@ type PropTypes = {
   setClearEditor: (value: boolean) => void;
 };
 
- const Tiptap = ({
+const Tiptap = ({
   setDescription,
   description,
   clearEditor,
@@ -175,7 +175,6 @@ type PropTypes = {
     }
   }, [clearEditor]);
 
-
   return (
     <div className="textEditor">
       <MenuBar editor={editor} />
@@ -183,4 +182,4 @@ type PropTypes = {
     </div>
   );
 };
-export default Tiptap
+export default Tiptap;

@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useState, useEffect, useMemo } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Category, Post } from "@/utils/types";
 
 import { SideHome } from "./side-home";
@@ -46,40 +46,35 @@ const HomeFilter = ({ categories, posts: poststring }: Props) => {
     }
   };
 
-
-
-  
   useEffect(() => {
     let result = posts;
     result = filterByCategory(result);
     result = filtersearchName(result);
     setArrayToFilter(result);
-  }, [searchValue, categoryName, poststring]); 
-
+  }, [searchValue, categoryName, poststring]);
 
   return (
-        <div className="bg-neutral px-4 md:px-0">
-
-          <div className=" mx-auto  flex max-w-7xl  flex-col md:flex-row">
-            <div className="order-2 w-full md:order-1 md:w-[80%]">
-              {arrayToFilter &&
-                arrayToFilter.map((el: Post) => {
-                  return (
-                    <div key={el.id} className="">
-                      <Posts post={el} />
-                    </div>
-                  );
-                })}
-            </div>
-            <div className="order-1 flex w-full flex-col items-center justify-end self-start bg-neutral md:order-2 md:ml-[80px] md:mr-[40px] md:w-[20%]">
-              <SideHome
-                categoryName={categoryName}
-                categories={categories}
-                setCategoryName={setCategoryName}
-              />
-            </div>
-          </div>
+    <div className="bg-neutral px-4 md:px-0">
+      <div className=" mx-auto  flex max-w-7xl  flex-col md:flex-row">
+        <div className="order-2 w-full md:order-1 md:w-[80%]">
+          {arrayToFilter &&
+            arrayToFilter.map((el: Post) => {
+              return (
+                <div key={el.id} className="">
+                  <Posts post={el} />
+                </div>
+              );
+            })}
         </div>
+        <div className="order-1 flex w-full flex-col items-center justify-end self-start bg-neutral md:order-2 md:ml-[80px] md:mr-[40px] md:w-[20%]">
+          <SideHome
+            categoryName={categoryName}
+            categories={categories}
+            setCategoryName={setCategoryName}
+          />
+        </div>
+      </div>
+    </div>
   );
 };
 

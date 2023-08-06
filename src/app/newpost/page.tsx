@@ -1,7 +1,6 @@
 import prisma from "@/utils/prisma";
 import { Category } from "@/utils/types";
 
-
 import dynamic from "next/dynamic";
 
 const NewPostClient = dynamic(() => import("./ClientPage"), {
@@ -14,8 +13,8 @@ async function getCategoriesData() {
   } catch (err) {
     console.log(err);
     return [];
-  } finally{
-    await prisma.$disconnect()
+  } finally {
+    await prisma.$disconnect();
   }
 }
 

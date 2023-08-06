@@ -1,12 +1,11 @@
-import { SideHome } from "@/components/side-home"; 
+import { SideHome } from "@/components/side-home";
 import prisma from "@/utils/prisma";
 import { Category, Post as PostType } from "@/utils/types";
 
 import dynamicpage from "next/dynamic";
 
-import DateCircle from "@/components/data-circle"; 
+import DateCircle from "@/components/data-circle";
 import dateFormat from "dateformat";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import sanitizeHtml from "sanitize-html";
 import { ImagePlaceholder } from "@/components/image-placeholder";
@@ -21,7 +20,7 @@ type CategoryOnPost = {
   category: Category;
 };
 
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata } from "next";
 
 type Props = {
   params: { id: string };
@@ -77,7 +76,7 @@ export async function generateStaticParams() {
           return String.fromCharCode(
             0xe0 | (cc >> 12),
             0x80 | ((cc >> 6) & 0x3f),
-            0x80 | (cc & 0x3f),
+            0x80 | (cc & 0x3f)
           );
         });
       return utf8String;
@@ -126,7 +125,7 @@ async function getPost(params: { id: string }) {
           return String.fromCharCode(
             0xe0 | (cc >> 12),
             0x80 | ((cc >> 6) & 0x3f),
-            0x80 | (cc & 0x3f),
+            0x80 | (cc & 0x3f)
           );
         });
       return utf8String;
@@ -194,7 +193,7 @@ const Post = async ({ params }: any) => {
                             {(index ? ", " : "") + cat.category.name}
                           </span>
                         );
-                      },
+                      }
                     )}
                 </span>
               </p>
@@ -206,7 +205,6 @@ const Post = async ({ params }: any) => {
                 <div className="flex w-full flex-col">
                   {post?.postPic && (
                     <div className="">
-
                       <ImagePlaceholder
                         alt="Post picture"
                         pic={post?.postPic}
@@ -238,10 +236,7 @@ const Post = async ({ params }: any) => {
           </div>
         </div>
         <div className="md:w-[73%] w-full px-6">
-          <Disqus
-            allowComments={post.allowComments}
-            id={params.id}
-          />
+          <Disqus allowComments={post.allowComments} id={params.id} />
         </div>
       </div>
     </div>

@@ -1,11 +1,10 @@
-import * as React from "react";
 import { useAutocomplete, AutocompleteGetTagProps } from "@mui/material";
 
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai/index";
 import { styled } from "@mui/material/styles";
 import { autocompleteClasses } from "@mui/material/Autocomplete";
-import { Categories, Category } from "@/utils/types";
-import { useEffect, memo } from "react";
+import { Category } from "@/utils/types";
+import { memo } from "react";
 import { Box } from "@mui/material";
 
 const Root = styled("div")(
@@ -14,7 +13,7 @@ const Root = styled("div")(
     theme.palette.mode === "dark" ? "rgba(255,255,255,0.65)" : "rgba(0,0,0,.85)"
   };
   font-size: 14px;
-`,
+`
 );
 
 const Label = styled("label")`
@@ -59,7 +58,7 @@ const InputWrapper = styled("div")(
     margin: 0;
     outline: 0;
   }
-`,
+`
 );
 
 interface TagProps extends ReturnType<AutocompleteGetTagProps> {
@@ -109,7 +108,7 @@ const StyledTag = styled(Tag)<TagProps>(
     cursor: pointer;
     padding: 4px;
   }
-`,
+`
 );
 
 const Listbox = styled("ul")(
@@ -156,7 +155,7 @@ const Listbox = styled("ul")(
       color: currentColor;
     }
   }
-`,
+`
 );
 
 type PropTypes = {

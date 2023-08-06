@@ -16,7 +16,7 @@ const Disqus = ({
       <DiscussionEmbed
         shortname="batdev"
         config={{
-          url: process.env.NEXT_PUBLIC_DISQUS+id,
+          url: process.env.NEXT_PUBLIC_DISQUS + id,
           identifier: id,
         }}
       />

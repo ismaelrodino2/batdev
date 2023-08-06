@@ -5,7 +5,7 @@ export type Post = {
   title: string;
   content: string;
   allowComments: boolean;
-  createdAt: Date; // Atualize para o tipo Date
+  createdAt: Date; 
   authorId: string;
   author: {
     id: string;
@@ -13,8 +13,8 @@ export type Post = {
     avatarKey: string | null;
     email: string | null;
     name: string | null;
-    updatedAt: Date | null; // Atualize para o tipo Date
-    createdAt: Date; // Atualize para o tipo Date
+    updatedAt: Date | null; 
+    createdAt: Date; 
   };
   categories: Array<{
     category: {
@@ -23,32 +23,31 @@ export type Post = {
     };
     postId: string;
     categoryId: string;
-    assignedAt: Date; // Atualize para o tipo Date
+    assignedAt: Date; 
   }>;
 };
 
-  export type Posts = Array<Post>
-  
-  export type Category ={
-    id: string;
-    name: string;
-  }
-  
-  export type Categories = Array<Category>
+export type Posts = Array<Post>;
 
-  export type User = {
-    id: string;
-    avatarUrl: string;
-    avatarKey: string;
-    email: string;
-    name: string;
-    updatedAt: Date;
-    createdAt: Date;
-  }
+export type Category = {
+  id: string;
+  name: string;
+};
 
-  export type StateType = {
-    open: boolean;
-    vertical: "top" | "bottom";
-    horizontal: "left" | "center" | "right";
-  };
-  
+export type Categories = Array<Category>;
+
+export type User = {
+  id: string;
+  avatarUrl: string;
+  avatarKey: string;
+  email: string;
+  name: string;
+  updatedAt: Date;
+  createdAt: Date;
+};
+
+export type StateType = {
+  open: boolean;
+  vertical: "top" | "bottom";
+  horizontal: "left" | "center" | "right";
+};

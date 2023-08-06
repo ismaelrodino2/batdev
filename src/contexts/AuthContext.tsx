@@ -51,7 +51,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             userId: data.user.id,
           },
         });
-        console.log('user', user)
+        console.log("user", user);
         const info = {
           authenticated: true,
           user,
@@ -68,7 +68,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setCookie(
           "supabase-auth",
           { token: token.data.token },
-          { maxAge: 60 * 6 * 24 },
+          { maxAge: 60 * 6 * 24 }
         );
 
         router.push("/");

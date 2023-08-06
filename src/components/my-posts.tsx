@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Modal from "@mui/material/Modal";
-import { Button, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import { Categories, Post, Posts } from "@/utils/types";
 import { deletePost, editPost } from "@/utils/helpers";
 import Tiptap from "./editor";
@@ -24,21 +24,20 @@ export const MyPosts: React.FC<MyPostsProps> = ({ posts, categories }) => {
 
   // Function to delete a post
   const handleDeletePost = async (post: Post) => {
-    setIsLoadingDelete(true)
+    setIsLoadingDelete(true);
     try {
       await deletePost(post);
 
       setShowDeleteModal(false);
     } catch (err) {
       console.log(err);
-    }finally{
-      setIsLoadingDelete(false)
+    } finally {
+      setIsLoadingDelete(false);
     }
   };
 
   // Function to edit a post
   const handleEditPost = async (post: Post | null) => {
-
     if (post?.id) {
       try {
         setIsLoadingEdit(true);

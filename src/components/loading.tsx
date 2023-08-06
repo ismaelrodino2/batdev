@@ -1,6 +1,6 @@
 import { CircularProgress } from "@mui/material";
 
-export const Loading = ({ isLoading }: {isLoading:boolean}) => {
+export const Loading = ({ isLoading }: { isLoading: boolean }) => {
   return (
     <div>
       {isLoading && (

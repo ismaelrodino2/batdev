@@ -1,8 +1,5 @@
 import { ClientHome } from "@/components/client-home";
-import Posts from "@/components/posts";
-import { SideHome } from "@/components/side-home";
 import prisma from "@/utils/prisma";
-import { Pagination, Stack, Typography } from "@mui/material";
 
 async function getPostsData() {
   try {

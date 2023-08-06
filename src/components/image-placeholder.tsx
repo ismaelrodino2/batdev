@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 export const ImagePlaceholder = ({
   pic,
@@ -26,7 +26,7 @@ export const ImagePlaceholder = ({
           "duration-700 ease-in-out group-hover:opacity-75",
           isLoading
             ? "scale-110 blur-2xl grayscale"
-            : "scale-100 blur-0 grayscale-0",
+            : "scale-100 blur-0 grayscale-0"
         )}
         onLoadingComplete={() => setLoading(false)}
       />

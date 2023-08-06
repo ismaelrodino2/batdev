@@ -18,7 +18,7 @@ async function getCategoriesData() {
 async function getPosts() {
   const nextCookies = nextcookies();
   const cookies = nextCookies.get("supabase-auth")?.value;
-  
+
   try {
     if (!cookies) return null;
 
@@ -44,13 +44,12 @@ async function getPosts() {
 }
 
 export default async function UpdatePost() {
-  const posts: Posts = await getPosts() ?? [];
+  const posts: Posts = (await getPosts()) ?? [];
   const categories: Categories = await getCategoriesData();
 
   return (
     <div>
-      <MyPosts posts={posts} categories={categories} /> 
+      <MyPosts posts={posts} categories={categories} />
     </div>
   );
 }
-

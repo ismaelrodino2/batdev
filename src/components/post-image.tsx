@@ -1,5 +1,4 @@
 import Image from "next/image";
-import NextImage from "next/image";
 
 type PropTypes = {
   postPicture: string | File;
