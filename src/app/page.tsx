@@ -1,5 +1,11 @@
 import { ClientHome } from "@/components/client-home";
 import prisma from "@/utils/prisma";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "BatDev",
+  description: "Batdev post list",
+};
 
 async function getPostsData() {
   try {
