@@ -43,6 +43,8 @@ async function getPosts() {
   }
 }
 
+export const revalidate = 60 // revalidate at most every hour
+
 export default async function UpdatePost() {
   const posts: Posts = (await getPosts()) ?? [];
   const categories: Categories = await getCategoriesData();
