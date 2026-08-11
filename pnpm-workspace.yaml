@@ -1,3 +1,12 @@
+# Not a monorepo — this file exists only because pnpm 11 moved its settings
+# here from package.json. `packages` is required all the same: without it,
+# pnpm 9 (which Vercel picks by project creation date) sees a workspace root
+# with no members and fails with "packages field missing or empty".
+packages:
+  - "."
+
+# esbuild backs tsx, which runs scripts/draft-post.ts.
 allowBuilds:
   esbuild: true
+  sharp: true
   unrs-resolver: true
