@@ -8,12 +8,26 @@ type Props = {
   /** Decorative artwork behind the masthead. Text switches to a fixed light
    *  palette when set, since the image is dark in both themes. */
   image?: string;
+  /** CSS object-position. The same artwork is reused across pages, so each one
+   *  frames a different part of it rather than repeating the identical shot. */
+  imagePosition?: string;
+  /** Shorter band — for index pages, where the list is the point. */
+  compact?: boolean;
 };
 
 /** The centred masthead BatDev has always opened with: small caps label, big
  *  extrabold title, short rule underneath. */
-export default function PageHeader({ eyebrow, title, lead, image }: Props) {
+export default function PageHeader({
+  eyebrow,
+  title,
+  lead,
+  image,
+  imagePosition = "center",
+  compact = false
+}: Props) {
   const onArt = Boolean(image);
+
+  const padding = onArt && !compact ? "py-24 sm:py-32" : "py-16 sm:py-20";
 
   return (
     <div
@@ -30,18 +44,15 @@ export default function PageHeader({ eyebrow, title, lead, image }: Props) {
             fill
             priority
             sizes="100vw"
-            className="-z-20 object-cover object-center"
+            style={{ objectPosition: imagePosition }}
+            className="-z-20 object-cover"
           />
           <div className="art-scrim absolute inset-0 -z-10" />
           <div className="art-fade absolute inset-x-0 bottom-0 -z-10 h-2/5" />
         </>
       )}
 
-      <div
-        className={`mx-auto max-w-2xl px-5 text-center sm:px-8 ${
-          onArt ? "py-24 sm:py-32" : "py-16 sm:py-20"
-        }`}
-      >
+      <div className={`mx-auto max-w-2xl px-5 text-center sm:px-8 ${padding}`}>
         {eyebrow && (
           <p
             className={`mb-3 text-[11px] font-extrabold uppercase tracking-label ${
@@ -69,7 +80,7 @@ export default function PageHeader({ eyebrow, title, lead, image }: Props) {
         {lead && (
           <p
             className={`mt-7 text-pretty leading-relaxed ${
-              onArt ? "text-white/85 drop-shadow-[0_1px_8px_rgba(0,0,0,0.7)]" : "text-muted"
+              onArt ? "text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.7)]" : "text-muted"
             }`}
           >
             {lead}

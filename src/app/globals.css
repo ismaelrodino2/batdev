@@ -51,9 +51,10 @@
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
   --color-accent-wash: var(--accent-wash);
-  /* Fixed brand teal, for use over the artwork — the themed --accent is tuned
-     for the page background and goes muddy on a dark image. */
-  --color-accent-bright: #74c2bd;
+  /* Brand teal, lightened for use over the artwork. The themed --accent is
+     tuned for the page background; #74c2bd itself only reaches 3.2:1 against
+     the scrimmed moon, which fails AA at the 11px the eyebrow label uses. */
+  --color-accent-bright: #b0e3de;
 
   --font-sans: var(--font-raleway), ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -105,10 +106,19 @@
    other dissolves its bottom edge into the page background.
 -------------------------------------------------------------------------- */
 .art-scrim {
-  background: rgba(6, 4, 14, 0.55);
+  /* 0.6, not 0.55: at 0.55 the lead paragraph fell to 4.35:1 where the moon
+     sits behind it. Costs a little of the artwork, buys AA. */
+  background: rgba(6, 4, 14, 0.6);
 }
 
+/* Only in dark mode. Fading a dark image into a light page reads as haze over
+   the artwork rather than a transition, so in light mode it ends at the border. */
 .art-fade {
+  display: none;
+}
+
+.theme-dark .art-fade {
+  display: block;
   background: linear-gradient(to top, var(--paper) 0%, rgba(0, 0, 0, 0) 100%);
 }
 

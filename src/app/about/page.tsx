@@ -23,6 +23,8 @@ export default function AboutPage() {
         title={SITE.author.fullName}
         lead={SITE.author.role}
         image="/batnoir.png"
+        // Up in the skyline, off-centre — a different view of the same city.
+        imagePosition="38% 18%"
       />
 
       <div className="prose-batdev prose prose-lg mx-auto max-w-2xl px-5 py-16 sm:px-8">

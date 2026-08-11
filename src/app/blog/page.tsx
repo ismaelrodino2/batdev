@@ -16,6 +16,8 @@ export default function BlogIndexPage() {
   return (
     <>
       <PageHeader
+        image="/batnoir.png"
+        compact
         eyebrow="Archive"
         title="Writing"
         lead="Everything published so far, newest first."

@@ -12,6 +12,9 @@ export default function HomePage() {
   return (
     <>
       <PageHeader
+        image="/batnoir2.png"
+        // The brand shot — framed to keep the bat-signal in view.
+        imagePosition="50% 22%"
         eyebrow={SITE.tagline}
         title="Engineering notes, written from the inside of the problem"
         lead={

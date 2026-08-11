@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     url: SITE.url,
     title: `${SITE.name} — ${SITE.tagline}`,
     description: SITE.description,
-    // 1200×630 JPEG derived from public/batnoir.png. Social scrapers don't go
+    // 1200×630 JPEG derived from public/batnoir2.png. Social scrapers don't go
     // through the image optimizer, so this one is pre-sized by hand.
     images: [{ url: "/og.jpg", width: 1200, height: 630, alt: `${SITE.name} — ${SITE.tagline}` }]
   },

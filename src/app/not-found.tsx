@@ -23,7 +23,7 @@ export default function NotFound() {
           This page doesn&rsquo;t exist
         </h1>
         <hr className="mx-auto mt-7 w-10 border-0 border-t-2 border-white/40" />
-        <p className="mt-7 leading-relaxed text-white/85 drop-shadow-[0_1px_8px_rgba(0,0,0,0.7)]">
+        <p className="mt-7 leading-relaxed text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.7)]">
           Wrong part of town. Everything published lives in the archive.
         </p>
         <Link
