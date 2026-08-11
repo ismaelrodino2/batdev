@@ -1,0 +1,92 @@
+---
+title: "Permissions belong in the database"
+slug: "permissions-belong-in-the-database"
+date: "2026-08-05"
+description: "Gudi has four roles and two client applications. Putting the access rules in Postgres row-level security instead of the clients removed an entire category of bug — and one naming convention did most of the work."
+tags: ["Architecture", "PostgreSQL", "Security"]
+---
+
+Gudi is a marketplace with two front ends: an Expo app for buyers and a Next.js dashboard
+for sellers and admins. Four roles — buyer, seller, admin, super admin — and one Supabase
+backend underneath both.
+
+The default way to build that is to check permissions in each client. It's the default
+because it's the path of least resistance: you already have the user object in hand, the
+check is one `if`, and it works immediately.
+
+It also means the answer to "who can read this row?" is spread across two codebases, and
+you find out you got it wrong from a user.
+
+## One place, not two
+
+Every access rule in Gudi is a row-level security policy in Postgres. The clients don't
+check anything — they issue the query and the database returns what that user is allowed
+to see. A buyer selecting from `items` gets approved items. An admin selecting from the
+same table gets everything pending moderation too. Same query, different result, no
+branch in the app.
+
+The consequence I care about most is that a new client is free. When I add an admin CLI,
+or a report generator, or a third app, it inherits the entire permission model by
+connecting. There is no rule to port and therefore no rule to port *incorrectly*.
+
+## The naming convention did the heavy lifting
+
+RLS gets a bad reputation because a schema with forty policies named
+`enable_read_for_users_based_on_user_id` is genuinely unreviewable. The fix was
+embarrassingly cheap — one naming convention, applied without exception:
+
+```
+{table}_{operation}_{actor}
+```
+
+Where `actor` is a fixed vocabulary: `own`, `staff`, `admin`, `super_admin`, `service`,
+`any_auth`.
+
+```sql
+create policy items_select_any_auth on items ...
+create policy items_update_own      on items ...
+create policy items_delete_staff    on items ...
+```
+
+Now `\d items` is a readable summary of who can do what to that table, and a missing
+policy is visible as a gap in the pattern rather than something you have to know to look
+for. Reviewing an access-control change stopped needing a mental model of the whole
+schema.
+
+<Callout>
+The convention matters more than the policies. Policies you can't scan are policies
+nobody reviews, and policies nobody reviews are where the holes live.
+</Callout>
+
+## Two rules that keep it honest
+
+**Never query the users table inside a policy.** Role lookups go through one
+security-definer helper — `get_my_role()` — and nothing else. Inlining the lookup means
+every policy is its own opportunity to get the join wrong, and it invites recursion:
+a policy on `users` that reads `users` will happily deadlock you at 2am.
+
+**Webhooks are `service_role`, never `authenticated`.** Payment webhooks, notification
+dispatch, and the coin ledger all write through policies scoped to the service role. If a
+write can only legitimately originate from an edge function, exposing it to
+`authenticated` is handing a client the ability to credit its own wallet. That one is
+worth stating out loud because it's easy to reach for the permissive policy while you're
+debugging and then never take it back out.
+
+## What it cost me
+
+Honesty demands the other column.
+
+Debugging is worse. A policy that silently filters a row looks identical to a row that
+doesn't exist, and you will burn an afternoon on an empty result set before remembering
+to check `auth.uid()`. I now keep a small SQL scratchpad that runs a query as a given
+role, and that alone paid for itself.
+
+Migrations are heavier, too. Every table change is also a policy change, and I keep a
+single baseline file that mirrors the incremental migrations so there's always one
+complete, readable source of truth for the schema. That's discipline the client-side
+approach doesn't ask for.
+
+I'd still take the trade. Multi-tenancy is coming for Gudi — per-city isolation — and
+because the rules live in one layer, that's a clause appended to a set of policies rather
+than an audit of every query in two applications. Decisions are worth what they make
+cheap later, and this one made the expensive thing cheap.

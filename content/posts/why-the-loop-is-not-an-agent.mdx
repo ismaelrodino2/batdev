@@ -1,0 +1,95 @@
+---
+title: "Why the application loop is not an agent"
+slug: "why-the-loop-is-not-an-agent"
+date: "2026-06-20"
+description: "WishApply applies to jobs on LinkedIn and Glassdoor without an agent deciding each click. That was a cost decision first and a reliability decision second — and the reliability part surprised me."
+tags: ["AI Engineering", "Architecture", "Agents"]
+---
+
+The obvious way to build a browser automation on top of an LLM in 2026 is to hand the
+model a screenshot and a set of actions and let it decide what to do next. It works. It
+demos beautifully. And for the problem I actually had, it was the wrong shape.
+
+WishApply applies to job postings: it opens a listing, fills the form, tailors the CV to
+the posting, answers the screening questions, and moves on. The natural instinct is to
+call that an agent task. It looks like one — multi-step, stateful, full of small
+decisions.
+
+It isn't. It's an automaton over a finite DOM.
+
+## The arithmetic that settled it
+
+An agent deciding each next action costs one model call per decision. On a LinkedIn Easy
+Apply flow, a run looks like: read the page, find the button, click, read the modal, find
+the field, type, scroll, find the next button, click, and so on. Thirty to eighty calls
+per job, depending on how many screens the posting has.
+
+The deterministic loop costs about seven calls per job — and none of them are about
+*where to click*. They're about the things that genuinely need judgment: is this job
+worth applying to, what should the CV emphasise, what's the answer to this screening
+question.
+
+At list prices that difference is not a rounding error. It's the difference between a
+product with a viable free tier and one without.
+
+## The part I didn't expect
+
+I went in thinking I was trading reliability for cost. I wasn't.
+
+A CSS selector that works is more reliable than a model choosing a button. When the
+selector breaks, it breaks loudly and in one place, and I fix it in one place. When a
+model picks the wrong button, it picks the wrong button *sometimes*, differently each
+run, and the failure surfaces three steps later as an application submitted to the wrong
+posting.
+
+There's also a lifecycle problem specific to browser extensions. All the automation lives
+in a Manifest V3 service worker, and MV3 service workers get killed. An agent loop that
+holds thirty turns of conversation state across an unpredictable termination is hostile
+to that environment in a way a resumable state machine simply is not.
+
+<Callout>
+The DOM here is *finite and known*. Two LinkedIn layouts, one Glassdoor flow. That's the
+precondition for this whole argument — if the surface were genuinely open-ended, the
+trade would run the other way.
+</Callout>
+
+## Where the agent stayed
+
+I didn't remove agents from the product. I moved them to the one place where they earn
+their cost: tailoring the CV.
+
+The difference is that CV tailoring has a **deterministic verifier**. Every claim the
+model writes gets checked against the candidate's evidence store — the profile, the
+uploaded CV, the things they've actually done. A claim is graded as verified, derived, or
+transferable, and anything that grounds in nothing gets rejected. That check is code, not
+a model.
+
+A verifier is what turns a loop into an agent worth paying for. It gives the loop an
+objective stopping rule: iterate until the verifier passes, or until you've burned the
+iteration budget. Without that signal you don't have an agent — you have an expensive
+prompt wearing an agent's clothes, and you have no way to know when it's done.
+
+```ts
+// Roughly the shape. The loop is boring on purpose.
+for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+  const draft = await writer.generate(plan, evidence);
+  const report = verify(draft, evidence);   // deterministic — no model
+
+  if (report.unsupported.length === 0) return draft;
+
+  plan = revise(plan, report.unsupported);  // feed the failures back
+}
+```
+
+## The heuristic I took away
+
+Before reaching for an agent, ask two questions:
+
+1. **Is the action space finite and known?** If yes, an automaton is cheaper, faster and
+   more debuggable. Model calls belong on the judgment, not the navigation.
+2. **Can I write a verifier?** If I can't state in code what "done and correct" means,
+   the agent has no stopping rule and I'm buying variance, not capability.
+
+Two yeses to the first question and one no to the second is the most common case I run
+into. It almost always means: write the state machine, and spend the model budget on the
+one step that actually needs a mind.

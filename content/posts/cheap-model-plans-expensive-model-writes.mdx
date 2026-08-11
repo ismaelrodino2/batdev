@@ -1,0 +1,87 @@
+---
+title: "The cheap model plans, the expensive one writes"
+slug: "cheap-model-plans-expensive-model-writes"
+date: "2026-07-18"
+description: "Splitting a generation pipeline across two models saved most of the cost of tailoring a CV. The rule that decided the split: cheapen the step you can audit."
+tags: ["AI Engineering", "Cost", "LLM"]
+---
+
+Tailoring a CV to a job posting is two jobs pretending to be one.
+
+The first is reasoning: which of this candidate's experiences map onto this posting, how
+strong is each match, what should lead. The second is writing: turning that into prose a
+recruiter will read without wincing.
+
+I ran both on the same expensive model for months because that's the obvious thing to do.
+Then I split them, and the reasoning stage stopped mattering to the bill.
+
+## The rule
+
+**Cheapen the step you can audit.**
+
+The plan is structured output over a fixed schema. It comes back as data:
+
+```json title="plan.json"
+{
+  "lead_with": "payment-orchestration",
+  "claims": [
+    { "id": "pix-split",    "grade": "verified",    "evidence": ["gudi.payments"] },
+    { "id": "high-traffic", "grade": "derived",     "evidence": ["bucksense.algolia"] },
+    { "id": "kafka",        "grade": "transferable", "evidence": [] }
+  ],
+  "omit": ["unrelated-tooling"]
+}
+```
+
+I can look at that and answer "did this classify correctly?" in about ten seconds. If
+`kafka` is graded `verified` and the evidence array is empty, the plan is wrong and I can
+see it's wrong. The check is mechanical enough that I wrote it as a test.
+
+Prose quality is not like that. "Is this paragraph good?" has no cheap oracle. Nobody
+reads a tailored CV and derives a pass/fail from a schema. So the step I *can't* audit is
+the step that keeps the expensive model.
+
+## What it cost
+
+At list prices the plan runs about a tenth of what the writer runs. Which means, once
+split, the reasoning stage is nearly free and essentially all of what a tailored CV costs
+is the writing.
+
+That's a satisfying number, but the more useful consequence is different: because the
+reasoning got cheap, I stopped rationing it. I can afford to plan more thoroughly, run
+the plan through a verifier, and revise — and the total is still lower than the
+single-model version that planned once and hoped.
+
+<Callout>
+Cheap reasoning changes what you're willing to try. The savings matter less than the
+things you stop avoiding because they were expensive.
+</Callout>
+
+## The trap I walked into first
+
+My first version of this split failed, and the failure is worth naming because it's a
+generic one.
+
+I gave the cheap model the *same* prompt as the expensive one and just swapped the model
+ID. The plans it produced were fine in shape and mush in content — it agreed with itself
+too easily, graded generously, and never said "there is no evidence for this."
+
+What fixed it wasn't a better model. It was making the schema hostile to vagueness: an
+`evidence` array that must contain concrete identifiers, a grade enum with no "probably",
+and a validator that rejects a `verified` claim with an empty evidence list before the
+plan ever reaches the writer.
+
+A schema you can fail is worth more than a bigger model, and it's the reason the whole
+split works: the cheap step is cheap *and* checkable, so cheapening it doesn't cost
+quality — it costs nothing.
+
+## Where this generalises
+
+Any generation pipeline with a reasoning stage and a rendering stage is a candidate:
+
+- **Decide then draft** — outline with the cheap model, write with the expensive one.
+- **Classify then respond** — route with the cheap model, answer with the expensive one.
+- **Extract then summarise** — pull structured facts cheaply, write the narrative dearly.
+
+The question is always the same. Which half of this can I check by reading it? That half
+gets the cheap model, a strict schema, and a validator. The other half gets the budget.

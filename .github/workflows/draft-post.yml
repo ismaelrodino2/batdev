@@ -1,0 +1,65 @@
+name: Draft a post
+
+# Manual only. You supply the brief; the pipeline turns it into a draft and
+# opens a PR. Nothing publishes until you merge — and the draft is written with
+# `draft: true`, so even an accidental merge keeps it out of the feed and the
+# sitemap until you flip it.
+on:
+  workflow_dispatch:
+    inputs:
+      brief:
+        description: "What you did, what you chose, and what it cost. A few sentences minimum."
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Generate the draft
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BRIEF: ${{ inputs.brief }}
+        run: pnpm draft
+
+      - name: Verify the site still builds with the draft in it
+        run: pnpm build
+
+      - name: Read the review report
+        id: report
+        run: |
+          {
+            echo 'body<<REPORT_EOF'
+            cat .draft-report.md
+            echo
+            echo '---'
+            echo '_Generated from a brief via `scripts/draft-post.ts`. Read it before merging — the'
+            echo 'self-check catches unsupported claims, not bad arguments._'
+            echo 'REPORT_EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Open the pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: draft/post-${{ github.run_id }}
+          commit-message: "content: draft post from brief"
+          title: "Draft: new post"
+          body: ${{ steps.report.outputs.body }}
+          labels: content, draft
+          add-paths: content/posts/**
+          delete-branch: true
