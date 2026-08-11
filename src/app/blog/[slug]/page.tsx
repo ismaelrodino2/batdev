@@ -29,7 +29,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: `${SITE.url}/blog/${post.slug}`,
       publishedTime: post.date,
       authors: [SITE.author.fullName],
-      tags: [...post.tags]
+      tags: [...post.tags],
+      // Next merges metadata shallowly, so a page-level `openGraph` replaces the
+      // layout's outright — the image has to be repeated or posts ship without one.
+      images: [{ url: "/og.jpg", width: 1200, height: 630, alt: post.title }]
     }
   };
 }

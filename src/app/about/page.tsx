@@ -18,7 +18,12 @@ const links = [
 export default function AboutPage() {
   return (
     <>
-      <PageHeader eyebrow="About" title={SITE.author.fullName} lead={SITE.author.role} />
+      <PageHeader
+        eyebrow="About"
+        title={SITE.author.fullName}
+        lead={SITE.author.role}
+        image="/batnoir.png"
+      />
 
       <div className="prose-batdev prose prose-lg mx-auto max-w-2xl px-5 py-16 sm:px-8">
         <p>

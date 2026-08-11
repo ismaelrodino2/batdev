@@ -51,6 +51,9 @@
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
   --color-accent-wash: var(--accent-wash);
+  /* Fixed brand teal, for use over the artwork — the themed --accent is tuned
+     for the page background and goes muddy on a dark image. */
+  --color-accent-bright: #74c2bd;
 
   --font-sans: var(--font-raleway), ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -94,6 +97,19 @@
       transition-duration: 0.01ms !important;
     }
   }
+}
+
+/* --------------------------------------------------------------------------
+   Artwork header. Written as plain CSS rather than gradient utilities so the
+   two layers are unambiguous: one darkens the image enough for white text, the
+   other dissolves its bottom edge into the page background.
+-------------------------------------------------------------------------- */
+.art-scrim {
+  background: rgba(6, 4, 14, 0.55);
+}
+
+.art-fade {
+  background: linear-gradient(to top, var(--paper) 0%, rgba(0, 0, 0, 0) 100%);
 }
 
 /* The animated hairline under nav links — BatDev's original hover treatment. */
