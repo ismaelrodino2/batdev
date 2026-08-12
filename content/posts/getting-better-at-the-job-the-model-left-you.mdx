@@ -1,0 +1,105 @@
+---
+title: "Getting better at the job the model left you"
+slug: "getting-better-at-the-job-the-model-left-you"
+date: "2026-08-12"
+description: "If the code arrives already written, what's left is deciding what should exist, checking what came back, and explaining both to people who don't read code. Three skills, and none of them is a framework."
+tags: ["Career", "AI Engineering", "Architecture"]
+---
+
+The [previous post](/blog/the-bubble-can-pop-and-nothing-goes-back) ended on a door I said
+I'd take: get better. That's an easy thing to say and a useless thing to say without a
+definition, so here's mine.
+
+When generation is cheap, three things stay expensive: **deciding what should exist**,
+**knowing whether what came back is right**, and **being understood by the people who
+aren't going to read the diff.** Everything I'd invest in now sits under one of those.
+
+## Architecture, meaning the trade-offs, not the diagram
+
+A model will happily give you a working implementation of whatever you describe. It will
+just as happily give you a working implementation of the wrong thing, and it will never
+be the one paged at 2am when the wrong thing meets production traffic.
+
+The judgment that decides *shape* is the surviving skill. Two of my own decisions make
+decent examples. Choosing a deterministic state machine over an agent loop for browser
+automation was [a cost and reliability call](/blog/why-the-loop-is-not-an-agent) that no
+amount of good code generation would have made for me — the generated agent loop would
+have worked, demoed well, and cost thirty times as much per run. Putting access rules in
+[row-level security instead of the clients](/blog/permissions-belong-in-the-database) was
+the same kind of call: both versions pass their tests, one of them stops being correct the
+day a second client appears.
+
+Those decisions have a shared property. They're cheap to make on paper and expensive to
+reverse in code — which is exactly the region where a model's speed buys you nothing and
+your understanding buys you everything.
+
+Concretely, what I think is worth studying deeply: consistency and failure semantics,
+where state lives and who owns it, coupling and blast radius, the actual cost model of the
+thing you're building. Boring, durable, and none of it goes stale when the framework does.
+
+## Review, which is the bottleneck now
+
+You can only review what you could have written. This is the sentence I'd tattoo on the
+industry.
+
+Reading generated code is not like reading a colleague's PR. A colleague's mistakes have a
+grain to them — you learn where they're sloppy. A model's mistakes are uniformly confident
+and uncorrelated: correct for eight functions, then an off-by-one in the ninth written in
+exactly the same tone. There's no tell. The only defence is knowing the domain well enough
+to have opinions before you read.
+
+Which means depth is now *defensive*. The engineer who understands transaction isolation
+catches the generated code that reads a row and writes it back without a lock. The one who
+doesn't, merges it, and finds out from a customer.
+
+<Callout>
+Every skill you skip because "the model handles it" becomes a blind spot in the only task
+you still have. Delegate the typing, not the understanding.
+</Callout>
+
+## Communication, which developers are famously bad at
+
+If the code is no longer the hard part, the specification is. And a specification is a
+conversation with a product owner who has a fuzzy idea, a deadline, and no interest in
+your enum.
+
+This is the skill I see undervalued most, probably because it's the one our field
+self-selects against. But look at where the remaining leverage sits: turning a vague
+request into a set of constraints, saying "that's two weeks and this variant is two days
+and here's what you lose", writing the design doc that stops three people from building
+three incompatible things. None of that is typing, all of it is expensive to get wrong,
+and a model can only help you once someone has decided what the thing is.
+
+Practical version: write the design doc before the prompt. If you can't explain the
+approach in a paragraph a non-engineer follows, you don't understand it well enough to
+review what the model gives you either.
+
+## Knowing the new stack — the possibilities, not the acronyms
+
+RAG, MCP, agents, evals, context engineering. Half of these will be renamed within two
+years and it doesn't matter, because companies are going to spend the next several years
+trying to put this capability into products, and someone has to know what's actually
+possible.
+
+The useful knowledge isn't the definition. It's the shape of the trade:
+
+- **RAG** — knowing that retrieval quality, not model quality, is where these systems
+  usually fail, and that the boring parts (chunking, ranking, freshness) decide the
+  outcome.
+- **MCP** — knowing what it costs to expose a tool to a model, and which of your systems
+  should never be one.
+- **Agents** — knowing that a loop without a verifier has no stopping rule, and that most
+  "agent" problems are automation problems with a model bolted on.
+- **Cost** — knowing which step of a pipeline can be cheap because you can audit it, which
+  is [most of what I learned building one](/blog/cheap-model-plans-expensive-model-writes).
+
+That's the wave to watch. Not the launches — the launches are marketing. The thing worth
+tracking is what each capability makes *newly feasible*, because that's the gap between
+what your company sells today and what it could sell next year, and someone in the
+building has to be able to see it.
+
+## The short version
+
+Let the model write the code. Keep the three things it can't do for you: decide what
+should exist, know when it's wrong, and make other humans agree. Those were always the
+job. The typing was just how we used to fill the day.
