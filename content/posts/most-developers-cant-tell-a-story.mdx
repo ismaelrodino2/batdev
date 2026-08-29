@@ -1,0 +1,105 @@
+---
+title: "Most developers can't tell a story. That's your opening."
+slug: "most-developers-cant-tell-a-story"
+date: "2026-08-29"
+description: "STAR+L, a story bank, callbacks, and open hooks. The mechanics of speaking well are learnable, almost nobody in this profession has learned them, and the gap is worth more than another framework."
+tags: ["Career", "Communication", "Interviews"]
+draft: false
+---
+
+The interviewer asks the easiest question in the world: *"Tell me about a hard problem you solved."*
+
+And I've watched genuinely excellent engineers — people I'd hire twice — answer it like this: "Uh, there was this thing with the queue... it was, like, a race condition? And we, I mean I, ended up changing how the workers picked up jobs. It was pretty complicated. Yeah. It worked out."
+
+That's a real story about real work with a real outcome, and it lands as nothing. The person on the other side writes *communication: unclear* and moves on, and a worse engineer who tells a tidier story gets the offer.
+
+I want to be blunt about the world we're in before the tactics, because the tactics only make sense if you accept the premise.
+
+## The unfair part
+
+Companies are full of people who speak well and deliver little. You've met them. The one who talks confidently in every meeting, owns the narrative of work they barely touched, and gets promoted past the person who actually built it.
+
+That's not a conspiracy. It's a measurement problem. Nobody in the room can evaluate your code, but *everybody* can evaluate how you sound. So how you sound becomes the proxy, and the proxy gets rewarded.
+
+You can be angry about that. I have been. But the useful response isn't cynicism, it's noticing what it implies: if talking well beats doing well, then **doing well plus talking well is close to unbeatable.** The person coasting on charm has one of the two. You can have both, and it's a much shorter climb than it looks — because most of this profession has never spent one deliberate hour on it.
+
+<Callout>
+Nobody expects you to be charming. The bar is *structured and clear*, and that bar is on the floor. Clearing it is a mechanical skill, not a personality trait.
+</Callout>
+
+## STAR, plus the letter everyone drops
+
+The standard frame is STAR: **Situation, Task, Action, Result.** It's old and it's boring and it works, because it forces the four things a listener needs and stops you from wandering.
+
+- **Situation** — one or two sentences of context. Where, when, what was on fire. Not the org chart.
+- **Task** — what specifically was *yours*. This is where you separate "we" from "I" without being obnoxious about it.
+- **Action** — what you did, and crucially *why you chose it over the alternative*. The alternative is what makes it sound like judgment instead of luck.
+- **Result** — the outcome, with a number if you have one. p99 from 4s to 300ms. Deploys from weekly to daily. Support tickets on that flow down by a fifth.
+
+Then add the letter almost nobody adds: **L for Learning.**
+
+What you'd do differently. What the experience changed about how you work now. That one sentence is the difference between a junior answer and a senior one, because it shows you extract principles from events instead of just accumulating them. It also rescues a story that ended badly — a failure with a learning is a strong answer, a failure without one is just a failure.
+
+The queue story again, with the structure:
+
+> We had a job queue processing payment webhooks, and about once a week a customer got double-charged. **(S)** I owned the worker layer, so tracking it down was mine. **(T)** Two workers could claim the same job inside a window of a few milliseconds. I moved the claim into a single atomic update in Postgres instead of a read-then-write in the app — I looked at a Redis lock first, but that's a dependency that can fail on its own, and the database was already the source of truth. **(A)** Double-charges went to zero and stayed there for the eight months I was still on that team. **(R)** What it taught me is that if the database can enforce an invariant, that's where the invariant belongs. I look for that now before I reach for coordination in application code. **(L)**
+
+Same events. Ninety seconds. Completely different candidate.
+
+## Keep a story bank
+
+This is the part that actually changes your interviews: don't improvise. Improvising under adrenaline is exactly why the queue story came out as mush.
+
+Build a bank of eight to ten stories from your career and keep them loaded. Roughly:
+
+- A hard technical problem you debugged
+- Something you shipped under a brutal deadline
+- A time you disagreed with a manager or a senior, and how it resolved
+- A real failure you caused
+- A conflict with a teammate
+- Something you built that nobody asked you to build
+- A time you explained something technical to a non-technical stakeholder
+- A time you changed your mind after being confident
+
+Write each one in STAR+L. Then say it out loud until it's around ninety seconds and stops sounding recited.
+
+The leverage is that questions vastly outnumber stories, but stories *re-cut*. The same conflict story answers "tell me about a disagreement," "how do you handle feedback," "describe a time you were wrong," and "what would your last teammate say about you" — you change which part you lean on. Ten stories covers nearly every behavioral question anyone will ask you.
+
+And prepare the ones that scare you, specifically. *Why did you leave? Why the gap here? Why three jobs in three years?* Those get worse when improvised, because the discomfort comes out as hesitation and hesitation reads as hiding something. Write the answer once, calmly, in a version you're willing to say out loud. Then it's just another story in the bank.
+
+## Callbacks
+
+A callback is referencing something the other person said earlier. "You mentioned the migration off the monolith is half done — this is exactly the kind of thing that got messy during ours."
+
+It costs nothing and does three things at once: it proves you were listening, it turns an interrogation into a conversation, and it makes you memorable, because memory is built out of connections and you just handed them one.
+
+Collect them as you go. Team size, stack, a problem they're fighting, something they're proud of — file it, use one or two later. Don't force five; that's a different problem.
+
+## Leave hooks open
+
+This one almost nobody does deliberately, and it's the most generous thing you can do in a conversation.
+
+End some answers with a visible thread the other person can pull. "...and that's when we dropped the microservice split, which is a longer story." "...the migration itself was fine, honestly. The ugly part was the backfill."
+
+You've just handed them their next question. Remember that the person interviewing you is also improvising, often tired, often on their fourth call of the day, and often not a trained interviewer at all. Making their job easy makes the whole conversation feel good — and *how it felt* is a large fraction of what they report back to the hiring manager.
+
+The same move works in a talk, where you plant the question you want from the audience, and in a standup, where "sync's done, though I hit something strange in the timezone handling" gets you help without booking a separate meeting.
+
+## It's not only interviews
+
+Selling yourself is the highest-stakes version, but the mechanics travel:
+
+- **Talks.** A conference talk is a story bank with slides. Situation, stakes, what you tried, what happened, what it taught you.
+- **Design reviews.** Lead with the situation and the result you want, not with your solution.
+- **Pull requests.** A description that says why, what you rejected, and what to watch is the written form of the same structure.
+- **Post-mortems.** STAR+L *is* a post-mortem. That's all a post-mortem has ever been.
+
+## The drill
+
+This week: pick three moments from your career, write them in STAR+L, and say each one out loud into your phone. Play it back. You'll hate it — everyone hates it — and you'll fix more in that one playback than in a month of reading about communication.
+
+That's the whole edge. A few hours to build the bank, a few more to make it sound like you, and it puts you ahead of most of the people you're competing with.
+
+I made the strategic case for this in [Communication is now a developer superpower](/blog/communication-is-now-a-developer-superpower). This post is the mechanics, because "communicate better" is useless advice without a form to practice.
+
+You did the work. It would be a shame to lose the room to someone who didn't, only because they knew how to tell it.
