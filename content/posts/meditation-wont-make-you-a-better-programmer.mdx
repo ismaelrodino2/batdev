@@ -1,0 +1,86 @@
+---
+title: "Meditation won't make you a better programmer. Do it anyway."
+slug: "meditation-wont-make-you-a-better-programmer"
+date: "2026-08-30"
+description: "The research on mindfulness and coding performance is honestly mixed. The research on what it does to a stressed nervous system is much stronger — and in this job, that's the variable that decides your afternoon."
+tags: ["Career", "Productivity", "Well-being"]
+draft: false
+---
+
+It's 4pm. You have fifteen tabs open, three of them the same Stack Overflow question. Slack has a red badge you've been not-reading for twenty minutes. You're staring at a stack trace you have now read four times without absorbing a single line of it.
+
+You're not out of ideas. You're out of attention. Those are different resources and we treat them like the same one.
+
+I want to make the case for meditation as a working tool for developers, and I want to do it without the wellness-influencer nonsense — which means starting with the part that undercuts my own argument.
+
+## What the research actually says
+
+If you go looking for evidence that meditation makes you write better code, you will be disappointed. I went looking.
+
+The software-specific studies are genuinely mixed. A group at the University of Seville ran [a controlled experiment on mindfulness in software engineering](https://dl.acm.org/doi/10.1145/2652524.2652539) with students doing conceptual modeling, and found real improvements in modeling performance after weeks of daily practice — and then [replicated it](https://www.sciencedirect.com/science/article/abs/pii/S0164121216301005). Encouraging. But when the same line of research moved to 51 professional developers at a Spanish company, the summary was blunter: well-being improved, and the effect on *performance* was inconclusive. A separate study with 52 developers doing ten minutes of mindfulness before a programming task also came back inconclusive. Both are catalogued in a 2025 paper on [MBSR at a multinational software company](https://arxiv.org/html/2506.11588), which is itself a small interview study — developers reported better stress management and clearer thinking, and also reported that translating it into actual work tasks was hard.
+
+The general cognitive literature is similarly modest. A meta-analysis of 27 RCTs in healthy adults found an overall effect around g = 0.2, with small but real effects on attention and executive control, and [nothing reliable on working memory](https://www.biorxiv.org/content/10.1101/2025.03.21.644687v1.full). Ten meta-analyses since 2016 and the working-memory question is still contested.
+
+So: nobody has shown that eight weeks of sitting makes you ship better software. If a productivity guru tells you otherwise, they're selling something.
+
+<Callout>
+The effect that *does* replicate is on how you feel and how you regulate. That sounds like the softer claim. In a job whose main asset is sustained attention and whose main failure mode is a fried person merging something at 6pm, it's the one that actually decides your output.
+</Callout>
+
+## Why this profession specifically
+
+Two things make developers unusually exposed.
+
+The first is the structure of the work. Deep focus is expensive to build and cheap to destroy. Gloria Mark's [study on interrupted work](https://dl.acm.org/doi/10.1145/1357054.1357072) found something that should be printed on every open-plan office wall: people who get interrupted complete the task *faster*, and pay for it in stress, frustration, time pressure, and effort. The productivity loss is not the headline. The headline is that your nervous system silently eats the cost, all day, and hands you the bill at 4pm.
+
+The second is that we're already at a bad baseline. JetBrains' developer ecosystem survey has put the share of developers who have experienced burnout at some point at roughly three quarters; LeadDev's 2025 survey of engineering leaders found around a fifth of developer respondents at *critical* levels. And there's a new pressure on top: early work on [GenAI adoption and burnout](https://arxiv.org/html/2510.07435v2) points at a dynamic most of us have felt — AI raises what's expected of your output without reducing the volume of work, so the tooling arrives as pressure rather than relief.
+
+None of that is fixed by a breathing exercise. But it does mean you're running a system with no thermal management, and the load is going up.
+
+## The three practices that survive contact with a real workday
+
+You don't need a retreat. The three things below take about fifteen minutes a day, total, and they're placed where the damage actually happens.
+
+### 1. Five minutes before you open Slack
+
+Not after. Before.
+
+Whatever you look at first sets the mode you spend the day in. If the first input is a red badge and someone else's urgency, you've handed the day's agenda to whoever wrote at 7am, and you'll be reacting until lunch. Five to ten minutes of sitting first — eyes closed, attention on the breath, coming back every time you drift — is a deliberate refusal to start the day reactive.
+
+Practically: before the laptop opens, or with the laptop open and *nothing else*. Then decide the one thing that matters today. Then open Slack.
+
+### 2. Pomodoro breaks that are actually breaks
+
+The Pomodoro break is supposed to clear working memory. Most of us spend it on Twitter, Reddit, or the group chat — which is not a break, it's a context switch into a stream engineered to be more stimulating than your job.
+
+You can't flush the cache by filling it with different garbage.
+
+Use the five minutes the way they were designed: eyes closed, follow the breath, let the problem you were on stop rehearsing itself. It feels unbearably slow for about three days and then it starts feeling like the only quiet part of the afternoon. And small doses many times a day are the version you'll actually keep doing — a heroic forty-minute session is the first thing you drop in the week you most need it.
+
+### 3. The bug pause
+
+This is the highest-leverage one and it has the strongest evidence behind it.
+
+Something breaks. Prod is red, or the test that passed an hour ago doesn't, and you feel the heat rise in your chest. What happens next is well documented in every post-mortem ever written: you stop reasoning and start flailing. You try things without predicting their outcome. You make the change you won't be able to explain tomorrow. You push it.
+
+Stand up. Leave the screen for two minutes. Breathe in for about four seconds, out for about six.
+
+The longer exhale is the whole point — that's the lever on the parasympathetic side. A Stanford RCT published in Cell Reports Medicine found that [five minutes a day of exhale-emphasized "cyclic sighing"](https://pmc.ncbi.nlm.nih.gov/articles/PMC9873947) improved mood and lowered physiological arousal *more* than mindfulness meditation over a month. Five minutes. That is one of the best evidence-to-effort ratios available to a human being, and it costs nothing.
+
+You are not meditating to become enlightened here. You're getting out of fight-or-flight so the part of your brain that can hold a call stack comes back online. Debugging angry is how one bug becomes three.
+
+## What this is not
+
+It's not a substitute for a functioning workplace, and I want to be loud about that because the corporate version of this idea is poison.
+
+If your on-call rotation is destroying you, if the deadline was set by someone who has never shipped anything, if the team is understaffed by two people and has been for a year — meditation is not the answer, and a company that responds to those conditions by expensing a mindfulness app subscription is telling you exactly how it plans to handle the real problem. The app is cheaper than hiring. Notice when that's the trade being made.
+
+Use this as a personal tool for a load you've chosen to carry. Don't let it be used on you as a painkiller for a load that shouldn't exist.
+
+## The practical move
+
+Two weeks. Five minutes, once a day, anchored to something you already do without fail — before the first Slack message is a good anchor because it happens every single working day.
+
+And measure the right thing. Not your PR count, not story points, not some focus score in an app. Measure how you feel at 6pm, and whether the bug that would have ruined last Tuesday merely annoyed you this time.
+
+That's the claim the evidence actually supports. It's also, as it happens, the one that determines whether you're still enjoying this job in ten years — which matters more than any number on a dashboard, and considerably more than [the anxiety being sold to you](/blog/relax-ai-is-not-deleting-your-dev-job) by people whose business model requires you to stay wired.
