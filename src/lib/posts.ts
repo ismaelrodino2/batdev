@@ -12,6 +12,8 @@ export type PostMeta = {
   tags: string[];
   readingMinutes: number;
   draft: boolean;
+  /** Engineering write-ups pinned to the home page, ahead of the essays. */
+  featured: boolean;
 };
 
 export type Post = PostMeta & { body: string };
@@ -42,6 +44,7 @@ function parse(fileName: string): Post {
     description: String(data.description ?? ""),
     tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
     draft: data.draft === true,
+    featured: data.featured === true,
     readingMinutes: readingMinutes(content),
     body: content
   };
