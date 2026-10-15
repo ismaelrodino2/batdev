@@ -1,0 +1,147 @@
+---
+title: "AI doesn't break your design system. It forks it, quietly."
+slug: "ai-doesnt-break-your-design-system"
+date: "2026-10-14"
+description: "The worst thing an AI coding tool does to a design system isn't a crash. It's a screen that matches the Figma pixel for pixel and uses none of your tokens. Here's what that drift looks like in a real codebase, and the guardrails that catch it."
+tags: ["Design Systems", "AI Engineering", "Frontend"]
+---
+
+The worst thing an AI coding tool does to a design system isn't dramatic. Nothing crashes
+and no test goes red. The screen matches the Figma frame almost pixel for pixel, and the
+reviewer approves it on the screenshot.
+
+It also doesn't use a single token.
+
+A background that should be `bg-shade` comes in as `bg-[#f4f1ec]`. A heading that should
+be one of the type classes comes in as `text-[42px]`. A spacing value eyeballed from the
+design comes in as `gap-[13px]`. Every value is *right*. None of them
+points at anything. The component looks like the system and has nothing to do with it,
+and the next time someone changes the token, that screen won't move.
+
+That's the failure mode I care about: not a design system broken in a way that shows,
+but one forked in a way that doesn't.
+
+## What the drift looks like when nobody's counting
+
+I spent two years on a luxury travel booking platform built on a Next.js app, a headless
+CMS and a component library the product team assembled whole pages from without a
+developer in the loop. It had a real Tailwind config with a type scale and a palette.
+It also had a safelist, because classes arriving from the CMS at runtime are invisible
+to Tailwind's scanner, and that safelist is a very honest record of what the
+codebase actually uses.
+
+I counted it while writing this. 782 entries. 574 of them contain an arbitrary value.
+
+- **42 hard-coded font sizes** like `text-[42px]`, `[&_h2]:text-[54px]` and `md:text-[81px]`,
+  against a config that defines a ten-step type scale.
+- **Hex values that are already tokens.** `bg-[#f4f1ec]` is the `shade` token, byte for byte.
+  `bg-[#CEE8E7]` is `aquamarine50`.
+- **43 classes that open with `!important`**, which are what you write when the cascade stopped
+  being something you trust.
+
+None of that was written by a model. That's my point: humans produce this drift
+on their own, slowly, over years. An AI tool produces exactly the same drift, but in an
+afternoon, at volume, and with a confidence that makes it look intentional.
+
+## Why the tools drift
+
+It's not that the models are bad at CSS. They're very good at CSS. That's the problem.
+
+**They optimise for the screenshot.** Give a model a Figma frame and a prompt that says
+"build this", and the shortest path to a correct-looking result is the literal value. A
+token is an indirection, and the model has to know the token exists, that it maps to that
+value, and that you'd rather have the name than the number. The screenshot can't tell
+the difference, so nothing pushes back.
+
+**Configs lie in ways only a human remembers.** That same config has this:
+
+```js title="tailwind.config.js"
+fontWeight: {
+  bold: 500
+},
+colors: {
+  lightGrey: '#E3E0DB', // Legacy - Similar to warmGrey
+  warmGrey: '#E3E0DB',
+}
+```
+
+`font-bold` renders at 500. Any model that has read a million Tailwind files will
+"fix" a heading to `font-[700]` because the design looks heavier than what `font-bold`
+gave it. And there are two names for one grey, one marked legacy in a comment that
+a tool reading the config as data won't weigh. Both are now equally valid suggestions
+forever.
+
+**`extend` keeps the whole default palette alive.** When the theme extends Tailwind
+instead of replacing it, `bg-gray-100` is still a legal class. A model that doesn't
+find the brand grey quickly will happily reach for the one it's seen everywhere else.
+The build passes. The grey is wrong by three hex digits and nobody notices until a
+designer does.
+
+**The quietest one of all.** The safelist also contains `bg-[##46B6BF]`. That's two hashes,
+which is invalid, so Tailwind generates nothing for it. A teal background somewhere
+renders as no background, and it got committed and safelisted without anyone noticing.
+That's the class of bug AI tools are best at: syntactically plausible, semantically empty,
+and invisible if the fallback happens to look fine.
+
+<Callout>
+A model asked to match a design will match the design. Whether it matches the system is
+a question nobody asked it, so you have to ask it somewhere else, in a place that fails.
+</Callout>
+
+## The guardrails that actually hold
+
+Prompting "please use the design tokens" helps a little and fails exactly when it
+matters, which is when the model can't find the right token and improvises. What works
+is making the wrong thing fail loudly, in code, before review.
+
+**Replace the theme, don't extend it.** If the palette is the brand palette and nothing
+else, `bg-gray-100` stops compiling to anything. The tool's best guess becomes an error
+instead of a near miss.
+
+**Lint arbitrary values.** Ban `[#...]` colours and `[..px]` font sizes outright, with
+an allowlist for the genuinely one-off cases, each with a comment saying why. A rule
+that blocks the commit is worth more than a guideline in a markdown file nobody's
+agent reads.
+
+**Make the system legible to the agent.** One short file the tool loads every time: the
+token names, what they're for, and the traps. "`font-bold` is 500 on purpose." "Never
+use `lightGrey`." The guideline doc that says "try to fit the text into the heading
+classes" is written for a person who'll ask a colleague. An agent needs it stated as a
+rule with no "try".
+
+**Separate the agent that builds from the agent that checks.** I split AI work into
+planning, building and QA, and the QA pass is where token drift gets caught, because
+it's asked a different question. The builder is asked "does it match the design?" The
+reviewer is asked "is every value in this diff a token, and if not, why?" That second
+question has a checkable answer, which is exactly what you want from a review step.
+
+**Treat the safelist and the token file as alarms.** If a PR adds arbitrary values to
+the safelist or a new colour to the config, that diff should get a human who owns the
+system, every time. Those two files are where a fork becomes permanent.
+
+**Review in Storybook, not on the page.** A component in isolation, across its states
+and both themes, shows you a hard-coded value the moment you flip a token. On a full page
+it hides behind content that happens to look right.
+
+## What it costs
+
+Honesty demands the other column.
+
+A strict theme and a lint rule slow the first week down. Designers hand over one-off
+values that genuinely aren't in the system, and every one of them becomes a
+conversation: is this a new token, or is this a mistake in the design? That conversation
+is the job, but it's friction, and on a deadline people will want to turn the rule off.
+
+The fix is to make the escape hatch cheap and visible rather than forbidden: an inline
+disable with a reason, which a reviewer can see and a script can count. If that count
+climbs, the system is missing something real, and that's useful information too.
+
+## The part that's actually new
+
+Design systems have always rotted this way. What changed is the speed. A team that used
+to add a handful of off-system values a sprint can now add a hundred, every one of them
+pixel-correct, every one of them reviewed on a screenshot that looks perfect.
+
+So the system has to defend itself mechanically. The model is a very fast, very
+literal contributor who never read the README, and the codebase should be built for
+exactly that contributor.
