@@ -37,7 +37,7 @@ export default function AboutPage() {
 
         <p>
           These days I split my time between <strong>Gudi</strong>, a cultural event marketplace I
-          founded and built end to end, and <strong>WishApply</strong>, an AI career assistant that
+          built end to end as its sole engineer, and <strong>WishApply</strong>, an AI career assistant that
           applies to jobs on the candidate&rsquo;s behalf. Both taught me more about architecture
           than any course did, mostly by being wrong first.
         </p>
@@ -53,9 +53,10 @@ export default function AboutPage() {
         </p>
 
         <p>
-          So the rule here is simple: nothing gets published unless I can point at the code, the
-          benchmark, or the incident behind it. If a post claims a number, that number came from
-          somewhere I can show you.
+          So the engineering posts follow one rule: nothing gets published unless I can point at the
+          code, the benchmark, or the incident behind it. If a post claims a number, that number
+          came from somewhere I can show you. The occasional essay on career and the industry is
+          opinion, and reads as such.
         </p>
 
         <h2>What I&rsquo;m going deep on</h2>
